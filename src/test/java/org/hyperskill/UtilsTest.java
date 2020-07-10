@@ -1,6 +1,5 @@
 package org.hyperskill;
 
-import netscape.javascript.JSObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -35,6 +34,10 @@ public class UtilsTest {
                 Arguments.of(
                         "<storage/>",
                         "{ \"storage\" : null }"
+                ),
+                Arguments.of(
+                        "",
+                        ""
                 )
         );
     }

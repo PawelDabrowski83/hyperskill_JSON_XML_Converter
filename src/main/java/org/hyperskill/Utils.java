@@ -35,29 +35,19 @@ public class Utils {
         }
         String key;
         String value = null;
+        String result;
         logger.fine("check if json has field with null value");
         if ("null".equals(matcher.group(4))) {
             key = matcher.group(3);
             logger.fine("null detected, setting key to " + key);
+            result = String.format("<%s/>", key);
         } else {
             key = matcher.group(1);
             value = matcher.group(2);
             logger.fine("null not detected, setting key to: " + key + " and value to: " + value);
+            result = String.format("<%s>%s</%s>", key, value, key);
         }
 
-        StringBuilder builder = new StringBuilder();
-        builder.append("<");
-        builder.append(key);
-        if (value != null) {
-            builder.append(">");
-            builder.append(value);
-            builder.append("</");
-            builder.append(key);
-            builder.append(">");
-        } else {
-            builder.append("/>");
-        }
-        String result = builder.toString();
         logger.fine("String OUTPUT: " + result);
         return result;
     }
@@ -84,26 +74,17 @@ public class Utils {
 
         String key;
         String value = "";
+        String result;
 
         if (matcher.group(1) == null) {
             key = matcher.group(2);
             value = matcher.group(3);
+            result = String.format("{ \"%s\" : \"%s\" }", key, value);
         } else {
             key = matcher.group(1);
+            result = String.format("{ \"%s\" : null }", key);
         }
-        StringBuilder builder = new StringBuilder();
-        builder.append("{ \"");
-        builder.append(key);
-        builder.append("\" : ");
-        if (matcher.group(3) == null) {
-            builder.append("null");
-        } else {
-            builder.append("\"");
-            builder.append(value);
-            builder.append("\"");
-        }
-        builder.append(" }");
-        String result = builder.toString();
+
         logger.fine("OUTPUT: " + result);
         return result;
     }

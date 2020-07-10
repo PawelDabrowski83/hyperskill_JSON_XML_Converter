@@ -10,12 +10,11 @@ import java.util.regex.Pattern;
 
 public class Utils {
     protected static final Pattern JSON_PATTERN = Pattern.compile("\\{\\s*\"(\\S+)\"\\s*:\\s*\"(\\S+)\"|\\s*\"(\\S+)\"\\s*:\\s*(null)\\s*}");
+    protected static final Pattern XML_PATTERN = Pattern.compile("<(\\S+)/>|<(\\S+)>(\\S+)</\\2>");
     protected static final Logger logger = Logger.getLogger(Utils.class.getName());
-
-
+    protected static FileHandler fh;
 
     public static String jsonToXml(String json) {
-        FileHandler fh;
         logger.setLevel(Level.FINE);
         try {
             fh = new FileHandler("logs/Utils.log");
@@ -60,6 +59,52 @@ public class Utils {
         }
         String result = builder.toString();
         logger.fine("String OUTPUT: " + result);
+        return result;
+    }
+
+    public static String xmlToJson(String xml) {
+        logger.setLevel(Level.FINE);
+        try {
+            fh = new FileHandler("logs/Utils.log");
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        logger.fine("method xmlToJson(String xml");
+        logger.fine("INPUT: " + xml);
+        Matcher matcher = XML_PATTERN.matcher(xml);
+        if (!matcher.find()) {
+            logger.fine("Cannot match xml to regex");
+            logger.fine("OUTPUT: (empty)");
+            return "";
+        }
+
+        String key;
+        String value = "";
+
+        if (matcher.group(1) == null) {
+            key = matcher.group(2);
+            value = matcher.group(3);
+        } else {
+            key = matcher.group(1);
+        }
+        StringBuilder builder = new StringBuilder();
+        builder.append("{ \"");
+        builder.append(key);
+        builder.append("\" : ");
+        if (matcher.group(3) == null) {
+            builder.append("null");
+        } else {
+            builder.append("\"");
+            builder.append(value);
+            builder.append("\"");
+        }
+        builder.append(" }");
+        String result = builder.toString();
+        logger.fine("OUTPUT: " + result);
         return result;
     }
 }

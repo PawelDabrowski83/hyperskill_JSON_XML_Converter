@@ -41,4 +41,31 @@ public class UtilsTest {
                 )
         );
     }
+
+    @DisplayName("Should xmlToJson work")
+    @ParameterizedTest(name = "{index} => expected={0}, xml={1}")
+    @MethodSource("xmlToJsonArgumentsProvider")
+    void xmlToJson(String expected, String xml) {
+        assertEquals(expected, Utils.xmlToJson(xml));
+    }
+    private static Stream<Arguments> xmlToJsonArgumentsProvider() {
+        return Stream.of(
+                Arguments.of(
+                        "{ \"storage\" : null }",
+                        "<storage/>"
+                ),
+                Arguments.of(
+                        "",
+                        ""
+                ),
+                Arguments.of(
+                        "{ \"host\" : \"127.0.0.1\" }",
+                        "<host>127.0.0.1</host>"
+                ),
+                Arguments.of(
+                        "{ \"jdk\" : \"1.8.9\" }",
+                        "<jdk>1.8.9</jdk>"
+                )
+        );
+    }
 }

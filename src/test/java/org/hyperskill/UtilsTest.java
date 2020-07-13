@@ -51,7 +51,7 @@ public class UtilsTest {
     private static Stream<Arguments> xmlToJsonArgumentsProvider() {
         return Stream.of(
                 Arguments.of(
-                        "{ \"storage\" : null }",
+                        "{\n\t\"storage\" : null\n}",
                         "<storage/>"
                 ),
                 Arguments.of(
@@ -59,12 +59,20 @@ public class UtilsTest {
                         ""
                 ),
                 Arguments.of(
-                        "{ \"host\" : \"127.0.0.1\" }",
+                        "{\n\t\"host\" : \"127.0.0.1\"\n}",
                         "<host>127.0.0.1</host>"
                 ),
                 Arguments.of(
-                        "{ \"jdk\" : \"1.8.9\" }",
+                        "{\n\t\"jdk\" : \"1.8.9\"\n}",
                         "<jdk>1.8.9</jdk>"
+                ),
+                Arguments.of(
+                        "{\n\t\"element_name\" : {\n\t\t\"@attribute1\" : \"attribute1_value\",\n\t\t" +
+                                "\"@attributeN\" : \"attributeN_value\",\n\t\t" +
+                                "\"#element\" : \"content\"\n\t" +
+                                "}\n" +
+                                "}",
+                        "<element attribute1 = \"attribute1_value\" attributeN= \"attributeN_value\">content</element>"
                 )
         );
     }

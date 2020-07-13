@@ -79,10 +79,10 @@ public class Utils {
         if (matcher.group(1) == null) {
             key = matcher.group(2);
             value = matcher.group(3);
-            result = String.format("{ \"%s\" : \"%s\" }", key, value);
+            result = String.format("{\n\t\"%s\" : \"%s\"\n}", key, value);
         } else {
             key = matcher.group(1);
-            result = String.format("{ \"%s\" : null }", key);
+            result = String.format("{\n\t\"%s\" : null\n}", key);
         }
 
         logger.fine("OUTPUT: " + result);

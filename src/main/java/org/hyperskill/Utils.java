@@ -1,5 +1,8 @@
 package org.hyperskill;
 
+import org.hyperskill.xml.Xml;
+import org.hyperskill.xml.Xmlish;
+
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -11,6 +14,7 @@ import java.util.regex.Pattern;
 public class Utils {
     protected static final Pattern JSON_PATTERN = Pattern.compile("\\{\\s*\"(\\S+)\"\\s*:\\s*\"(\\S+)\"|\\s*\"(\\S+)\"\\s*:\\s*(null)\\s*}");
     protected static final Pattern XML_PATTERN = Pattern.compile("<(\\S+)/>|<(\\S+)>(\\S+)</\\2>");
+    protected static final Pattern XML_ATTRIBUTES = Pattern.compile("(\\S+)\\s*=\\s*[\"'](\\S+)[\"']");
     protected static final Logger logger = Logger.getLogger(Utils.class.getName());
     protected static FileHandler fh;
 
@@ -25,8 +29,8 @@ public class Utils {
             e.printStackTrace();
         }
 
-        logger.fine("method jsonToXML (String json)");
-        logger.fine("INPUT: " + json);
+        logger.fine("method jsonToXML (String json) >>> INPUT: " + json);
+
         Matcher matcher = JSON_PATTERN.matcher(json);
         logger.fine("matcher with regex " + JSON_PATTERN);
         if (!matcher.find()) {
@@ -40,10 +44,12 @@ public class Utils {
         if ("null".equals(matcher.group(4))) {
             key = matcher.group(3);
             logger.fine("null detected, setting key to " + key);
+            Xmlish xml = new Xml(key);
             result = String.format("<%s/>", key);
         } else {
             key = matcher.group(1);
             value = matcher.group(2);
+            Xmlish xml = new Xml(matcher.group(1), matcher.group(2));
             logger.fine("null not detected, setting key to: " + key + " and value to: " + value);
             result = String.format("<%s>%s</%s>", key, value, key);
         }

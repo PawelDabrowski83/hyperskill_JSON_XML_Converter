@@ -67,10 +67,12 @@ public class UtilsTest {
                         "<jdk>1.8.9</jdk>"
                 ),
                 Arguments.of(
-                        "{\n\t\"element_name\" : {\n\t\t\"@attribute1\" : \"attribute1_value\",\n\t\t" +
-                                "\"@attributeN\" : \"attributeN_value\",\n\t\t" +
-                                "\"#element\" : \"content\"\n\t" +
-                                "}\n" +
+                        "{\n" +
+                                "\t\"element_name\" : {\n" +
+                                "\t\t\"@attribute1\" : \"attribute1_value\",\n" +
+                                "\t\t" + "\"@attributeN\" : \"attributeN_value\",\n" +
+                                "\t\t" + "\"#element\" : \"content\"\n" +
+                                "\t" + "}\n" +
                                 "}",
                         "<element attribute1 = \"attribute1_value\" attributeN= \"attributeN_value\">content</element>"
                 )

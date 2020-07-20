@@ -16,6 +16,7 @@ public class Utils {
     protected static final Pattern JSON_PATTERN = Pattern.compile("\\{\\s*\"(\\S+)\"\\s*:\\s*\"(\\S+)\"|\\s*\"(\\S+)\"\\s*:\\s*(null)\\s*}");
     protected static final Pattern XML_PATTERN = Pattern.compile("<(\\S+)/>|<(\\S+)>(\\S+)</\\2>");
     protected static final Pattern XML_ATTRIBUTES = Pattern.compile("(\\S+)\\s*=\\s*[\"'](\\S+)[\"']");
+    protected static final Pattern XML_EXTENDED = Pattern.compile("(\\S+)\\s*=\\s*[\"'](\\S+)[\"']|<(\\w+)|>(\\w+)");
     protected static final Logger logger = Logger.getLogger(Utils.class.getName());
     protected static FileHandler fh;
 
@@ -38,25 +39,15 @@ public class Utils {
             logger.fine("match not found, returning empty string");
             return "";
         }
-        String key;
-        String value = null;
-        String result;
-        logger.fine("check if json has field with null value");
+        Xmlish xml;
         if ("null".equals(matcher.group(4))) {
-            key = matcher.group(3);
-            logger.fine("null detected, setting key to " + key);
-            Xmlish xml = new Xml(key);
-            result = String.format("<%s/>", key);
+            xml = new Xml(matcher.group(3));
         } else {
-            key = matcher.group(1);
-            value = matcher.group(2);
-            Xmlish xml = new Xml(matcher.group(1), matcher.group(2));
-            logger.fine("null not detected, setting key to: " + key + " and value to: " + value);
-            result = String.format("<%s>%s</%s>", key, value, key);
+            xml = new Xml(matcher.group(1), matcher.group(2));
         }
 
-        logger.fine("String OUTPUT: " + result);
-        return result;
+        logger.fine("String OUTPUT: " + xml.toString());
+        return xml.toString();
     }
 
     public static String xmlToJson(String xml) {
@@ -70,8 +61,7 @@ public class Utils {
             e.printStackTrace();
         }
 
-        logger.fine("method xmlToJson(String xml");
-        logger.fine("INPUT: " + xml);
+        logger.fine("method xmlToJson(String xml) >> INPUT: " + xml);
         Matcher matcher = XML_PATTERN.matcher(xml);
         if (!matcher.find()) {
             logger.fine("Cannot match xml to regex");

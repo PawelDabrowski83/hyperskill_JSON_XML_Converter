@@ -15,6 +15,11 @@ public class XmlContainer implements Xmlish {
         return key;
     }
 
+    @Override
+    public String getValue() {
+        return null;
+    }
+
     public Set<Xmlish> getContent() {
         return content;
     }

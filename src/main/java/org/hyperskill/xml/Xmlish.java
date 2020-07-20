@@ -4,4 +4,6 @@ public interface Xmlish {
     /*
     Notation for simple xml tag or xml container
      */
+    String getKey();
+    String getValue();
 }

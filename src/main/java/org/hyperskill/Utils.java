@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Utils {
     protected static final Pattern JSON_PATTERN = Pattern.compile("\\{\\s*\"(\\S+)\"\\s*:\\s*\"(\\S+)\"|\\s*\"(\\S+)\"\\s*:\\s*(null)\\s*}");
@@ -93,5 +94,17 @@ public class Utils {
 
         logger.fine("OUTPUT: " + result);
         return result;
+    }
+
+    /**
+     * Add indentation to String
+     * @param given one/multiline string
+     * @return indented string
+     */
+    protected static String indent(String given) {
+        if (given == null || given.isEmpty()) {
+            return "";
+        }
+        return given.lines().map(n -> "\t" + n).collect(Collectors.joining(System.lineSeparator()));
     }
 }

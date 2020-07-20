@@ -76,4 +76,27 @@ public class UtilsTest {
                 )
         );
     }
+
+    @DisplayName("Should indent() work, adding next level of tabulation")
+    @ParameterizedTest(name = "{index} => expected={0}, given={1}")
+    @MethodSource("indentArgumentsProvider")
+    void indent(String expected, String given) {
+        assertEquals(expected, Utils.indent(given));
+    }
+    private static Stream<Arguments> indentArgumentsProvider() {
+        return Stream.of(
+                Arguments.of("\tcat", "cat"),
+                Arguments.of("\ttak\n" +
+                        "\t\tnie",
+                        "tak\n" +
+                        "\tnie"),
+                Arguments.of("", ""),
+                Arguments.of("\tone\n" +
+                        "\t\ttwo\n" +
+                        "\t\t\tthree",
+                        "one\n" +
+                        "\ttwo\n" +
+                        "\t\tthree")
+        );
+    }
 }

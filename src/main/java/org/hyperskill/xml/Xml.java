@@ -62,13 +62,24 @@ public class Xml implements Xmlish{
 
     @Override
     public String toString() {
+        String attribute = null;
+        if (attributes != null && !attributes.isEmpty()) {
+            attribute = getAttributes().toString().replaceAll("[\\[\\],]", "");
+        }
         if (value == null || value.isEmpty()) {
-            return String.format("<%s/>", key);
+            if (attribute == null) {
+                return String.format("<%s/>", key);
+            } else {
+                return String.format("<%s %s/>", key, attribute);
+//                System.out.println();
+//                return "<" + key + " " + attribute + " />";
+            }
+        } else {
+            if (attribute == null) {
+                return String.format("<%s>%s</%s>", key, value, key);
+            } else {
+                return String.format("<%s %s>%s</%s>", key, attribute, value, key);
+            }
         }
-        if (attributes == null || attributes.isEmpty()) {
-            return String.format("<%s>%s</%s>", key, value, key);
-        }
-        String attributes = getAttributes().toString();
-        return String.format("<%s %s>%s</%s>", key, attributes, value, key);
     }
 }

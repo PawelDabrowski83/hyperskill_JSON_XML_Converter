@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -27,11 +28,11 @@ public class XmlTest {
                 Arguments.of("<house>Duras</house>", new Xml("house", "Duras")),
                 Arguments.of(
                         "<book title='Thinking in Java' author='Bruce Eckel'/>",
-                        new Xml("book", null, Set.of(
+                        new Xml("book", null, new LinkedHashSet<>(Set.of(
                                 new XmlAttribute("title", "Thinking in Java"),
                                 new XmlAttribute("author", "Bruce Eckel")
                                 )
-                        )
+                        ))
                 ),
                 Arguments.of(
                         "<book title='Thinking in Java'/>",

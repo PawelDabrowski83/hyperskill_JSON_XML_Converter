@@ -28,6 +28,14 @@ public class UtilsTest {
                         "{\"host\":\"127.0.0.1\"}"
                 ),
                 Arguments.of(
+                        "<cat>Bobek</cat>",
+                        "{\"cat\":\"Bobek\"}"
+                ),
+                Arguments.of(
+                        "<sentence>Ala ma kota</sentence>",
+                        "{\"sentence\":\"Ala ma kota\"}"
+                ),
+                Arguments.of(
                         "<success/>",
                         "{\"success\": null }"
                 ),

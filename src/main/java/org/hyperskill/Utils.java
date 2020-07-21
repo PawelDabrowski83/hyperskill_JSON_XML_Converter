@@ -1,9 +1,14 @@
 package org.hyperskill;
 
+import org.hyperskill.json.Json;
+import org.hyperskill.json.Jsonish;
 import org.hyperskill.xml.Xml;
+import org.hyperskill.xml.XmlAttribute;
 import org.hyperskill.xml.Xmlish;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,10 +18,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Utils {
-    protected static final Pattern JSON_PATTERN = Pattern.compile("\\{\\s*\"(\\S+)\"\\s*:\\s*\"(\\S+)\"|\\s*\"(\\S+)\"\\s*:\\s*(null)\\s*}");
-    protected static final Pattern XML_PATTERN = Pattern.compile("<(\\S+)/>|<(\\S+)>(\\S+)</\\2>");
+    protected static final Pattern JSON_PATTERN = Pattern.compile("\\{\\s*\"(\\S[^\"]*)\"\\s*:\\s*\"(\\S[^\"]*)\"\\s*}|\\{\\s*\"(\\S[^\"]*)\"\\s*:\\s*null\\s*}");
+    protected static final Pattern XML_PATTERN = Pattern.compile("(\\S+)\\s*=\\s*[\"'](.*?)[\"']|<(\\w+)|>(\\S+)</\\S+>");
     protected static final Pattern XML_ATTRIBUTES = Pattern.compile("(\\S+)\\s*=\\s*[\"'](\\S+)[\"']");
-    protected static final Pattern XML_EXTENDED = Pattern.compile("(\\S+)\\s*=\\s*[\"'](\\S+)[\"']|<(\\w+)|>(\\w+)");
     protected static final Logger logger = Logger.getLogger(Utils.class.getName());
     protected static FileHandler fh;
 
@@ -40,10 +44,29 @@ public class Utils {
             return "";
         }
         Xmlish xml;
-        if ("null".equals(matcher.group(4))) {
-            xml = new Xml(matcher.group(3));
+        Set<XmlAttribute> attributes = new HashSet<>();
+
+        if (matcher.group(1) != null) {
+            XmlAttribute attribute;
+            while (matcher.find()) {
+                attribute = new XmlAttribute(matcher.group(1), matcher.group(2));
+                attributes.add(attribute);
+            }
+            matcher.reset();
+        }
+        if (matcher.group(4) == null) {
+            if (attributes.isEmpty()) {
+                xml = new Xml(matcher.group(3));
+            } else {
+                xml = new Xml(matcher.group(3), attributes);
+            }
         } else {
-            xml = new Xml(matcher.group(1), matcher.group(2));
+            if (attributes.isEmpty()) {
+                xml = new Xml(matcher.group(3), matcher.group(4));
+            } else {
+                xml = new Xml(matcher.group(3), matcher.group(4), attributes);
+            }
+
         }
 
         logger.fine("String OUTPUT: " + xml.toString());
@@ -65,25 +88,19 @@ public class Utils {
         Matcher matcher = XML_PATTERN.matcher(xml);
         if (!matcher.find()) {
             logger.fine("Cannot match xml to regex");
-            logger.fine("OUTPUT: (empty)");
             return "";
         }
 
-        String key;
-        String value = "";
-        String result;
+        Jsonish json;
 
-        if (matcher.group(1) == null) {
-            key = matcher.group(2);
-            value = matcher.group(3);
-            result = String.format("{\n\t\"%s\" : \"%s\"\n}", key, value);
+        if (matcher.group(4) == null) {
+            json = new Json(matcher.group(3));
         } else {
-            key = matcher.group(1);
-            result = String.format("{\n\t\"%s\" : null\n}", key);
+            json = new Json(matcher.group(3), matcher.group(4));
         }
 
-        logger.fine("OUTPUT: " + result);
-        return result;
+        logger.fine("OUTPUT: " + json.toString());
+        return json.toString();
     }
 
     /**

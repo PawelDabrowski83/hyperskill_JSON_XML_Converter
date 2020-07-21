@@ -16,6 +16,12 @@ public class Xml implements Xmlish{
         this.attributes = new HashSet<>();
     }
 
+    public Xml(String key, Set<XmlAttribute> attributes) {
+        this.key = key;
+        this.value = null;
+        this.attributes = attributes;
+    }
+
     public Xml(String key, String value) {
         this.key = key;
         this.value = value;
@@ -71,8 +77,6 @@ public class Xml implements Xmlish{
                 return String.format("<%s/>", key);
             } else {
                 return String.format("<%s %s/>", key, attribute);
-//                System.out.println();
-//                return "<" + key + " " + attribute + " />";
             }
         } else {
             if (attribute == null) {

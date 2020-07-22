@@ -21,27 +21,39 @@ public class UtilsTest {
         return Stream.of(
                 Arguments.of(
                         "<jdk>1.8.9</jdk>",
-                        "{\"jdk\" : \"1.8.9\"}"
+                        "{\n" +
+                                "\t\"jdk\" : \"1.8.9\"\n" +
+                        "}"
                 ),
                 Arguments.of(
                         "<host>127.0.0.1</host>",
-                        "{\"host\":\"127.0.0.1\"}"
+                        "{\n" +
+                                "\t\"host\":\"127.0.0.1\"\n" +
+                        "}"
                 ),
                 Arguments.of(
                         "<cat>Bobek</cat>",
-                        "{\"cat\":\"Bobek\"}"
+                        "{\n" +
+                                "\t\"cat\":\"Bobek\"\n" +
+                        "}"
                 ),
                 Arguments.of(
                         "<sentence>Ala ma kota</sentence>",
-                        "{\"sentence\":\"Ala ma kota\"}"
+                        "{\n" +
+                                "\t\"sentence\":\"Ala ma kota\"\n" +
+                        "}"
                 ),
                 Arguments.of(
                         "<success/>",
-                        "{\"success\": null }"
+                        "{\n" +
+                                "\t\"success\": null\n" +
+                        " }"
                 ),
                 Arguments.of(
-                        "<storage/>",
-                        "{ \"storage\" : null }"
+                        "<new storage/>",
+                        "{\n" +
+                                "\t\"new storage\" : null\n" +
+                        " }"
                 ),
                 Arguments.of(
                         "",

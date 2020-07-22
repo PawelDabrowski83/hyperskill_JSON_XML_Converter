@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Utils {
-    protected static final Pattern JSON_PATTERN = Pattern.compile("\\{\\s*\"(\\w[^\"]+)\"\\s*:\\s*\"(\\w[^\"]+)\"\\s*|\\{\\s*\"(\\w[^\"]+)\"\\s*:\\s*null\\s*}");
+    protected static final Pattern JSON_PATTERN = Pattern.compile("\\{\\s*\"(.+)\"\\s*:\\s*\"(.+)\"\\s*}|\\{\\s*\"(.+)\"\\s*:\\s*null\\s*}");
     protected static final Pattern XML_PATTERN = Pattern.compile("(\\S+)\\s*=\\s*[\"'](.*?)[\"']|<(\\w+)|>(\\S+)</\\S+>");
     protected static final Pattern XML_ATTRIBUTES = Pattern.compile("(\\S+)\\s*=\\s*[\"'](\\S+)[\"']");
     protected static final Logger logger = Logger.getLogger(Utils.class.getName());
@@ -46,27 +46,11 @@ public class Utils {
         Xmlish xml;
         Set<XmlAttribute> attributes = new HashSet<>();
 
-        if (matcher.group(1) != null) {
-            XmlAttribute attribute;
-            while (matcher.find()) {
-                attribute = new XmlAttribute(matcher.group(1), matcher.group(2));
-                attributes.add(attribute);
-            }
-            matcher.reset();
-        }
-        if (matcher.group(3) != null) {
-            if (attributes.isEmpty()) {
-                xml = new Xml(matcher.group(3));
-            } else {
-                xml = new Xml(matcher.group(3), attributes);
-            }
-        } else {
-            if (attributes.isEmpty()) {
-                xml = new Xml(matcher.group(3), matcher.group(4));
-            } else {
-                xml = new Xml(matcher.group(3), matcher.group(4), attributes);
-            }
 
+        if (matcher.group(3) != null) {
+            xml = new Xml(matcher.group(3));
+        } else {
+            xml = new Xml(matcher.group(1), matcher.group(2));
         }
 
         logger.fine("String OUTPUT: " + xml.toString());

@@ -19,8 +19,9 @@ import java.util.stream.Collectors;
 
 public class Utils {
     protected static final Pattern JSON_PATTERN = Pattern.compile("\\{\\s*\"(.+)\"\\s*:\\s*\"(.+)\"\\s*}|\\{\\s*\"(.+)\"\\s*:\\s*null\\s*}");
-    protected static final Pattern XML_PATTERN = Pattern.compile("(\\S+)\\s*=\\s*[\"'](.*?)[\"']|<(\\w+)|>(\\S+)</\\S+>");
+    protected static final Pattern XML_PATTERN = Pattern.compile("(\\S+)\\s*=\\s*[\"'](.*?)[\"']|<(\\w+)");
     protected static final Pattern XML_ATTRIBUTES = Pattern.compile("(\\S+)\\s*=\\s*[\"'](\\S+)[\"']");
+    protected static final Pattern XML_CONTENT = Pattern.compile("<\\w+.*>(.*)</\\w+>");
     protected static final Logger logger = Logger.getLogger(Utils.class.getName());
     protected static FileHandler fh;
 
@@ -57,6 +58,11 @@ public class Utils {
         return xml.toString();
     }
 
+    /**
+     * convert xml to json string
+     * @param xml string in valid xml format
+     * @return string in json format
+     */
     public static String xmlToJson(String xml) {
         logger.setLevel(Level.FINE);
         try {
@@ -69,7 +75,20 @@ public class Utils {
         }
 
         logger.fine("method xmlToJson(String xml) >> INPUT: " + xml);
-        Matcher matcher = XML_PATTERN.matcher(xml);
+//        Matcher matcher = XML_PATTERN.matcher(xml);
+//        if (!matcher.find()) {
+//            logger.fine("Cannot match xml to regex");
+//            return "";
+//        }
+        Matcher matcher = XML_CONTENT.matcher(xml);
+        String content = "";
+        if (!matcher.matches()) {
+            logger.fine("Cannot match xml to regex " + XML_CONTENT);
+        } else {
+            content = matcher.group(1);
+        }
+
+        matcher = XML_PATTERN.matcher(xml);
         if (!matcher.find()) {
             logger.fine("Cannot match xml to regex");
             return "";
@@ -77,10 +96,10 @@ public class Utils {
 
         Jsonish json;
 
-        if (matcher.group(4) == null) {
+        if (content.isEmpty()) {
             json = new Json(matcher.group(3));
         } else {
-            json = new Json(matcher.group(3), matcher.group(4));
+            json = new Json(matcher.group(3), content);
         }
 
         logger.fine("OUTPUT: " + json.toString());

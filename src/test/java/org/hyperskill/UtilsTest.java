@@ -32,9 +32,9 @@ public class UtilsTest {
                         "}"
                 ),
                 Arguments.of(
-                        "<cat>Bobek</cat>",
+                        "<new_cat>Bobek</new_cat>",
                         "{\n" +
-                                "\t\"cat\":\"Bobek\"\n" +
+                                "\t\"new_cat\":\"Bobek\"\n" +
                         "}"
                 ),
                 Arguments.of(
@@ -50,9 +50,9 @@ public class UtilsTest {
                         " }"
                 ),
                 Arguments.of(
-                        "<new storage/>",
+                        "<newStorage/>",
                         "{\n" +
-                                "\t\"new storage\" : null\n" +
+                                "\t\"newStorage\" : null\n" +
                         " }"
                 ),
                 Arguments.of(
@@ -85,6 +85,10 @@ public class UtilsTest {
                 Arguments.of(
                         "{\n\t\"jdk\" : \"1.8.9\"\n}",
                         "<jdk>1.8.9</jdk>"
+                ),
+                Arguments.of(
+                        "{\n\t\"sentence\" : \"Ala ma kota\"\n}",
+                        "<sentence>Ala ma kota</sentence>"
                 ),
                 Arguments.of(
                         "{\n" +

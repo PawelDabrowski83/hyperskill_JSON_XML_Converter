@@ -1,12 +1,12 @@
 package org.hyperskill.xml;
 
-import java.util.Set;
+import java.util.List;
 
 public class XmlContainer implements Xmlish {
     private final String key;
-    private final Set<Xmlish> content;
+    private final List<Xmlish> content;
 
-    public XmlContainer(String key, Set<Xmlish> content) {
+    public XmlContainer(String key, List<Xmlish> content) {
         this.key = key;
         this.content = content;
     }
@@ -20,7 +20,7 @@ public class XmlContainer implements Xmlish {
         return null;
     }
 
-    public Set<Xmlish> getContent() {
+    public List<Xmlish> getContent() {
         return content;
     }
 

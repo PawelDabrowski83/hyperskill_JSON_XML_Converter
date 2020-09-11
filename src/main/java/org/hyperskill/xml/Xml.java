@@ -1,22 +1,20 @@
 package org.hyperskill.xml;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Xml implements Xmlish{
 
     private final String key;
     private final String value;
-    private final Set<XmlAttribute> attributes;
+    private final List<XmlAttribute> attributes;
 
     public Xml(String key) {
         this.key = key;
         this.value = null;
-        this.attributes = new HashSet<>();
+        this.attributes = new ArrayList<>();
     }
 
-    public Xml(String key, Set<XmlAttribute> attributes) {
+    public Xml(String key, List<XmlAttribute> attributes) {
         this.key = key;
         this.value = null;
         this.attributes = attributes;
@@ -25,10 +23,10 @@ public class Xml implements Xmlish{
     public Xml(String key, String value) {
         this.key = key;
         this.value = value;
-        this.attributes = new HashSet<>();
+        this.attributes = new ArrayList<>();
     }
 
-    public Xml(String key, String value, Set<XmlAttribute> attributes) {
+    public Xml(String key, String value, List<XmlAttribute> attributes) {
         this.key = key;
         this.value = value;
         this.attributes = attributes;
@@ -42,7 +40,7 @@ public class Xml implements Xmlish{
         return value;
     }
 
-    public Set<XmlAttribute> getAttributes() {
+    public List<XmlAttribute> getAttributes() {
         return attributes;
     }
 

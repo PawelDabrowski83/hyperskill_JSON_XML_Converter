@@ -75,11 +75,6 @@ public class Utils {
         }
 
         logger.fine("method xmlToJson(String xml) >> INPUT: " + xml);
-//        Matcher matcher = XML_PATTERN.matcher(xml);
-//        if (!matcher.find()) {
-//            logger.fine("Cannot match xml to regex");
-//            return "";
-//        }
         Matcher matcher = XML_CONTENT.matcher(xml);
         String content = "";
         if (!matcher.matches()) {
@@ -116,5 +111,11 @@ public class Utils {
             return "";
         }
         return given.lines().map(n -> "\t" + n).collect(Collectors.joining(System.lineSeparator()));
+    }
+
+    protected static String flatten(String given) {
+        return given.replaceAll(System.lineSeparator(), "")
+                .replaceAll("\t", "")
+                .replaceAll("\\s{2,}", " ");
     }
 }

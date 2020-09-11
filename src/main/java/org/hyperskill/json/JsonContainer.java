@@ -1,13 +1,14 @@
 package org.hyperskill.json;
 
+import java.util.List;
 import java.util.Set;
 
 public class JsonContainer implements Jsonish{
 
     protected final String key;
-    protected final Set<Jsonish> content;
+    protected final List<Jsonish> content;
 
-    public JsonContainer(String key, Set<Jsonish> content) {
+    public JsonContainer(String key, List<Jsonish> content) {
         this.key = key;
         this.content = content;
     }
@@ -16,7 +17,7 @@ public class JsonContainer implements Jsonish{
         return key;
     }
 
-    public Set<Jsonish> getContent() {
+    public List<Jsonish> getContent() {
         return content;
     }
 

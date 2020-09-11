@@ -5,9 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
@@ -28,7 +26,7 @@ public class XmlTest {
                 Arguments.of("<house>Duras</house>", new Xml("house", "Duras")),
                 Arguments.of(
                         "<book title='Thinking in Java' author='Bruce Eckel'/>",
-                        new Xml("book", null, new LinkedHashSet<>(Set.of(
+                        new Xml("book", null, new ArrayList<>(List.of(
                                 new XmlAttribute("title", "Thinking in Java"),
                                 new XmlAttribute("author", "Bruce Eckel")
                                 )
@@ -36,13 +34,13 @@ public class XmlTest {
                 ),
                 Arguments.of(
                         "<book title='Thinking in Java'/>",
-                        new Xml("book", null, Set.of(
+                        new Xml("book", null, List.of(
                                 new XmlAttribute("title", "Thinking in Java")
                         ))
                 ),
                 Arguments.of(
                         "<book author='Bruce Eckel'>Thinking in Java</book>",
-                        new Xml("book", "Thinking in Java", Set.of(new XmlAttribute("author", "Bruce Eckel")))
+                        new Xml("book", "Thinking in Java", List.of(new XmlAttribute("author", "Bruce Eckel")))
                 )
         );
     }

@@ -125,4 +125,31 @@ public class UtilsTest {
                         "\t\tthree")
         );
     }
+
+    @DisplayName("should flatten transform multiline string to single line without tabulation")
+    @ParameterizedTest
+    @MethodSource("flattenArgumentsProvider")
+    void flatten(String expected, String given) {
+        assertEquals(expected, Utils.flatten(given));
+    }
+    private static Stream<Arguments> flattenArgumentsProvider(){
+        return Stream.of(
+                Arguments.of("", ""),
+                Arguments.of("{ \"employee\" : { \"@department\" : \"manager\", \"#employee\" : \"Garry Smith\" }}",
+                        "{\n" +
+                                "    \"employee\" : {\n" +
+                                "        \"@department\" : \"manager\",\n" +
+                                "        \"#employee\" : \"Garry Smith\"\n" +
+                                "    }\n" +
+                                "}"),
+                Arguments.of("{ \"person\" : { \"@rate\" : 1, \"@name\" : \"Torvalds\", \"#person\" : null }}",
+                        "{\n" +
+                                "    \"person\" : {\n" +
+                                "        \"@rate\" : 1,\n" +
+                                "        \"@name\" : \"Torvalds\",\n" +
+                                "        \"#person\" : null\n" +
+                                "    }\n" +
+                                "}")
+        );
+    }
 }
